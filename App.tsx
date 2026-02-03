@@ -17,6 +17,7 @@ import Dashboard from './components/Dashboard';
 import TransactionMonitoring from './components/TransactionMonitoring';
 import SanctionsScreening from './components/SanctionsScreening';
 import CaseManagement from './components/CaseManagement';
+import CaseDetails from './components/CaseDetails';
 import RuleConfiguration from './components/RuleConfiguration';
 
 const Sidebar = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) => {
@@ -44,7 +45,7 @@ const Sidebar = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) =>
 
       <nav className="mt-8 px-4 space-y-2">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = location.pathname.startsWith(item.path === '/' ? '____NONE____' : item.path) || (item.path === '/' && location.pathname === '/');
           return (
             <Link
               key={item.name}
@@ -126,6 +127,7 @@ const App: React.FC = () => {
               <Route path="/monitoring" element={<TransactionMonitoring />} />
               <Route path="/sanctions" element={<SanctionsScreening />} />
               <Route path="/cases" element={<CaseManagement />} />
+              <Route path="/cases/:id" element={<CaseDetails />} />
               <Route path="/rules" element={<RuleConfiguration />} />
             </Routes>
           </main>

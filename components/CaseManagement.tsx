@@ -1,11 +1,13 @@
 
 import React from 'react';
 import { MoreHorizontal, Plus, Clock, User as UserIcon, AlertTriangle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { MOCK_CASES, COLORS } from '../constants';
 import { RiskLevel } from '../types';
 
-// Changed props type from { caseItem: any } to any to allow React's special 'key' prop when rendering in lists
 const CaseCard = ({ caseItem }: any) => {
+  const navigate = useNavigate();
+
   const getRiskColor = (level: RiskLevel) => {
     switch (level) {
       case RiskLevel.CRITICAL: return 'bg-purple-100 text-purple-700 border-purple-200';
@@ -16,7 +18,10 @@ const CaseCard = ({ caseItem }: any) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing mb-3 group">
+    <div 
+      onClick={() => navigate(`/cases/${caseItem.id}`)}
+      className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer active:scale-[0.98] mb-3 group"
+    >
       <div className="flex justify-between items-start mb-3">
         <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getRiskColor(caseItem.riskLevel)}`}>
           {caseItem.riskLevel}
@@ -88,12 +93,11 @@ const CaseManagement: React.FC = () => {
             </div>
             
             <div className="flex-1 overflow-y-auto pr-1">
-              {MOCK_CASES.filter(c => c.status === col.status).map(c => (
+              {MOCK_CASES.filter(c => c.status === (col.status as any)).map(c => (
                 <CaseCard key={c.id} caseItem={c} />
               ))}
               
-              {/* Decorative empty state placeholders if count > mocked data */}
-              {col.count > MOCK_CASES.filter(c => c.status === col.status).length && (
+              {col.count > MOCK_CASES.filter(c => c.status === (col.status as any)).length && (
                 <div className="py-8 border-2 border-dashed border-slate-200 rounded-lg flex flex-col items-center justify-center text-slate-300">
                   <AlertTriangle className="w-6 h-6 mb-2 opacity-50" />
                   <span className="text-xs font-medium">More alerts pending...</span>

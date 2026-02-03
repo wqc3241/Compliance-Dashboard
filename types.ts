@@ -19,6 +19,7 @@ export interface Transaction {
   amount: number;
   currency: string;
   type: string;
+  gateway: string;
   sender: {
     id: string;
     country: string;
@@ -42,6 +43,8 @@ export interface Case {
   timeInQueue: string;
   assignedAnalyst: string;
   status: 'NEW' | 'IN_REVIEW' | 'PENDING_INFO' | 'READY_TO_CLOSE';
+  description?: string;
+  customerAge?: string;
 }
 
 export interface SanctionsMatch {

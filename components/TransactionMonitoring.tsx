@@ -1,9 +1,8 @@
 
 import React, { useState } from 'react';
-// Added AlertTriangle to the imports
-import { MoreVertical, Filter, Download, ExternalLink, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react';
-import { MOCK_TRANSACTIONS, COLORS } from '../constants';
-import { TransactionStatus, RiskLevel, Transaction } from '../types';
+import { MoreVertical, Filter, Download, ExternalLink, ChevronDown, ChevronUp, AlertTriangle, ShieldCheck, User, Server } from 'lucide-react';
+import { MOCK_TRANSACTIONS } from '../constants';
+import { TransactionStatus, RiskLevel } from '../types';
 
 const TransactionMonitoring: React.FC = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -21,6 +20,15 @@ const TransactionMonitoring: React.FC = () => {
     if (score < 30) return 'text-green-600';
     if (score < 70) return 'text-amber-600';
     return 'text-red-600';
+  };
+
+  const getRiskBadgeColor = (level: RiskLevel) => {
+    switch (level) {
+      case RiskLevel.CRITICAL: return 'bg-purple-100 text-purple-700 border-purple-200';
+      case RiskLevel.HIGH: return 'bg-red-100 text-red-700 border-red-200';
+      case RiskLevel.MEDIUM: return 'bg-amber-100 text-amber-700 border-amber-200';
+      default: return 'bg-green-100 text-green-700 border-green-200';
+    }
   };
 
   return (
@@ -107,17 +115,46 @@ const TransactionMonitoring: React.FC = () => {
                   {expandedId === txn.id && (
                     <tr className="bg-blue-50/30">
                       <td colSpan={7} className="px-12 py-6 border-l-4 border-blue-500">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                           <div>
-                            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Sender Details</h4>
-                            <div className="space-y-2">
-                              <p className="text-sm text-slate-600">ID: <span className="font-semibold text-slate-900 mono">{txn.sender.id}</span></p>
-                              <p className="text-sm text-slate-600">Country: <span className="font-semibold text-slate-900">{txn.sender.country}</span></p>
-                              <p className="text-sm text-slate-600">Risk Rating: <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-[10px] font-bold">{txn.sender.riskRating}</span></p>
+                            <div className="flex items-center space-x-2 mb-3">
+                              <User className="w-4 h-4 text-slate-400" />
+                              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Transaction Details</h4>
+                            </div>
+                            <div className="space-y-2 bg-white/50 p-3 rounded-lg border border-slate-200/50">
+                              <p className="text-xs text-slate-600 flex justify-between">Gateway: <span className="flex items-center space-x-1 font-semibold text-slate-900"><Server className="w-3 h-3 text-blue-500" /> <span>{txn.gateway}</span></span></p>
+                              <p className="text-xs text-slate-600 flex justify-between">Sender: <span className="font-semibold text-slate-900 mono">{txn.sender.id}</span></p>
+                              <p className="text-xs text-slate-600 flex justify-between items-center">
+                                Risk Level: 
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getRiskBadgeColor(txn.sender.riskRating)}`}>
+                                  {txn.sender.riskRating}
+                                </span>
+                              </p>
                             </div>
                           </div>
+
                           <div>
-                            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Triggered Rules</h4>
+                            <div className="flex items-center space-x-2 mb-3">
+                              <ShieldCheck className="w-4 h-4 text-slate-400" />
+                              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Receiver Details</h4>
+                            </div>
+                            <div className="space-y-2 bg-white/50 p-3 rounded-lg border border-slate-200/50">
+                              <p className="text-xs text-slate-600 flex justify-between">ID: <span className="font-semibold text-slate-900 mono">{txn.receiver.id}</span></p>
+                              <p className="text-xs text-slate-600 flex justify-between">Country: <span className="font-semibold text-slate-900">{txn.receiver.country}</span></p>
+                              <p className="text-xs text-slate-600 flex justify-between items-center">
+                                Risk Level: 
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${getRiskBadgeColor(txn.receiver.riskRating)}`}>
+                                  {txn.receiver.riskRating}
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="flex items-center space-x-2 mb-3">
+                              <AlertTriangle className="w-4 h-4 text-slate-400" />
+                              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Triggered Rules</h4>
+                            </div>
                             {txn.triggeredRules.length > 0 ? (
                               <div className="space-y-2">
                                 {txn.triggeredRules.map(rule => (
@@ -128,21 +165,24 @@ const TransactionMonitoring: React.FC = () => {
                                 ))}
                               </div>
                             ) : (
-                              <p className="text-xs text-slate-500 italic">No automated rules triggered.</p>
+                              <div className="p-3 bg-green-50 border border-green-100 rounded text-center">
+                                <p className="text-xs text-green-700 font-medium">Clear of automated flags</p>
+                              </div>
                             )}
                           </div>
+
                           <div className="flex flex-col justify-between">
                             <div>
-                              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Compliance Action</h4>
-                              <div className="flex space-x-2">
-                                <button className="px-3 py-1.5 bg-green-600 text-white text-xs font-bold rounded hover:bg-green-700">Approve</button>
-                                <button className="px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700">Block</button>
-                                <button className="px-3 py-1.5 bg-slate-600 text-white text-xs font-bold rounded hover:bg-slate-700">Escalate</button>
+                              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Compliance Disposition</h4>
+                              <div className="grid grid-cols-2 gap-2">
+                                <button className="px-3 py-2 bg-green-600 text-white text-[10px] font-bold rounded hover:bg-green-700 transition-colors uppercase tracking-wider">Approve</button>
+                                <button className="px-3 py-2 bg-red-600 text-white text-[10px] font-bold rounded hover:bg-red-700 transition-colors uppercase tracking-wider">Block</button>
+                                <button className="col-span-2 px-3 py-2 bg-slate-800 text-white text-[10px] font-bold rounded hover:bg-slate-900 transition-colors uppercase tracking-wider">Escalate</button>
                               </div>
                             </div>
-                            <button className="flex items-center space-x-1 mt-4 text-xs font-bold text-blue-600 hover:underline">
-                              <span>Full Investigation Report</span>
-                              <ExternalLink className="w-3 h-3" />
+                            <button className="flex items-center justify-center space-x-1 mt-4 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors group">
+                              <span>Open Case Details</span>
+                              <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                             </button>
                           </div>
                         </div>

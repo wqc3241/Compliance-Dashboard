@@ -1,12 +1,15 @@
 
 import { RiskLevel, TransactionStatus, Transaction, Case, SanctionsMatch, ComplianceRule } from './types';
 
+const GATEWAYS = ['Core-API', 'Braintree-Connect', 'Express-Checkout', 'FastLane-Vault', 'Venmo-Direct'];
+
 export const MOCK_TRANSACTIONS: Transaction[] = Array.from({ length: 20 }).map((_, i) => ({
   id: `TXN-2024-${1000 + i}`,
   timestamp: new Date(Date.now() - Math.random() * 100000000).toISOString(),
   amount: Math.floor(Math.random() * 10000) + 100,
   currency: 'USD',
   type: i % 3 === 0 ? 'P2P_TRANSFER' : 'MERCHANT_PAYMENT',
+  gateway: GATEWAYS[Math.floor(Math.random() * GATEWAYS.length)],
   sender: {
     id: `USR-***${Math.floor(Math.random() * 9000) + 1000}`,
     country: i % 5 === 0 ? 'MX' : 'US',
@@ -23,7 +26,17 @@ export const MOCK_TRANSACTIONS: Transaction[] = Array.from({ length: 20 }).map((
 }));
 
 export const MOCK_CASES: Case[] = [
-  { id: 'CASE-4421', customerId: 'CUST-009', alertType: 'AML Velocity', riskLevel: RiskLevel.HIGH, timeInQueue: '4h 12m', assignedAnalyst: 'Sarah J.', status: 'IN_REVIEW' },
+  { 
+    id: 'CASE-4421', 
+    customerId: 'CUST-009', 
+    alertType: 'AML Velocity', 
+    riskLevel: RiskLevel.HIGH, 
+    timeInQueue: '4h 12m', 
+    assignedAnalyst: 'Sarah J.', 
+    status: 'IN_REVIEW',
+    description: 'High frequency of transfers from multiple unique cards in a 2-hour window.',
+    customerAge: '2.4 years'
+  },
   { id: 'CASE-4422', customerId: 'CUST-112', alertType: 'Sanctions Match', riskLevel: RiskLevel.CRITICAL, timeInQueue: '12m', assignedAnalyst: 'Michael K.', status: 'NEW' },
   { id: 'CASE-4423', customerId: 'CUST-551', alertType: 'Structuring', riskLevel: RiskLevel.MEDIUM, timeInQueue: '2d 4h', assignedAnalyst: 'Sarah J.', status: 'PENDING_INFO' },
   { id: 'CASE-4424', customerId: 'CUST-883', alertType: 'High Value Int.', riskLevel: RiskLevel.HIGH, timeInQueue: '1h 30m', assignedAnalyst: 'Unassigned', status: 'NEW' },
