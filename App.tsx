@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) =>
     { name: 'Monitoring', icon: Activity, path: '/monitoring' },
     { name: 'Sanctions', icon: ShieldAlert, path: '/sanctions' },
     { name: 'Cases', icon: Briefcase, path: '/cases' },
-    { name: 'Rules', icon: Settings, path: '/rules' },
+    { name: 'Rules', icon: Settings, path: '/rules' }
   ];
 
   return (

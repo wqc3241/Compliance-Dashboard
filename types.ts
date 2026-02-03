@@ -33,6 +33,7 @@ export interface Transaction {
   riskScore: number;
   triggeredRules: string[];
   status: TransactionStatus;
+  caseId?: string;
 }
 
 export interface Case {

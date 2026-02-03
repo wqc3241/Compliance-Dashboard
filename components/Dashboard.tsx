@@ -4,7 +4,6 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, Legend, BarChart, Bar 
 } from 'recharts';
-// Added Activity to the imports
 import { ArrowUpRight, ArrowDownRight, Users, AlertTriangle, ShieldCheck, Clock, Activity } from 'lucide-react';
 import { COLORS } from '../constants';
 
@@ -15,13 +14,13 @@ const lineData = [
   { name: 'Thu', alerts: 1580 },
   { name: 'Fri', alerts: 1890 },
   { name: 'Sat', alerts: 940 },
-  { name: 'Sun', alerts: 820 },
+  { name: 'Sun', alerts: 820 }
 ];
 
 const riskData = [
   { name: 'High', value: 15, color: COLORS.risk.high },
   { name: 'Medium', value: 35, color: COLORS.risk.medium },
-  { name: 'Low', value: 50, color: COLORS.risk.low },
+  { name: 'Low', value: 50, color: COLORS.risk.low }
 ];
 
 const regionData = [
@@ -29,7 +28,7 @@ const regionData = [
   { name: 'Europe', volume: 3800, risk: 8 },
   { name: 'Asia Pacific', volume: 5200, risk: 24 },
   { name: 'Latin America', volume: 2100, risk: 38 },
-  { name: 'Middle East', volume: 1500, risk: 42 },
+  { name: 'Middle East', volume: 1500, risk: 42 }
 ];
 
 const StatCard = ({ title, value, change, icon: Icon, trend }: any) => (

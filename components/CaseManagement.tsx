@@ -53,7 +53,7 @@ const CaseManagement: React.FC = () => {
     { title: 'New Alerts', status: 'NEW', count: 5 },
     { title: 'In Review', status: 'IN_REVIEW', count: 3 },
     { title: 'Pending Info', status: 'PENDING_INFO', count: 8 },
-    { title: 'Resolved', status: 'READY_TO_CLOSE', count: 12 },
+    { title: 'Resolved', status: 'READY_TO_CLOSE', count: 12 }
   ];
 
   return (

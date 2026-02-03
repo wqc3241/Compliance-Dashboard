@@ -45,7 +45,7 @@ const CaseDetails: React.FC = () => {
     { time: '2h ago', event: 'Analyst assigned', user: 'System', icon: User },
     { time: '3h ago', event: 'Rule RULE-001 Triggered', user: 'Gateway Engine', icon: AlertTriangle },
     { time: '3h ago', event: 'Alert Generated', user: 'System', icon: Activity },
-    { time: '4h ago', event: 'Transaction Received', user: 'CUST-009', icon: Clock },
+    { time: '4h ago', event: 'Transaction Received', user: 'CUST-009', icon: Clock }
   ];
 
   return (
